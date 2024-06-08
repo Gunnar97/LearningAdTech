@@ -1,23 +1,7 @@
 import { defineConfig } from 'vite';
 import Inspect from 'vite-plugin-inspect'
-const modules = ['/src/debugHighlight.js']
-function virtualModules(){
-    return {
-        name: 'virtual-modules',
-        resolveId(id) {
-            if (id === 'virtual:plugins') {
-              return id;
-            }
-            return null;
-        },
-        load(id) {
-            if (id === 'virtual:plugins') {
-                return modules.map((module) => `import '${module}';`).join('\n');
-            }
-            return null;
-        },
-    };
-}
+import {virtualModules} from "./plugins/virtual_plugin.js";
+
 
 export default defineConfig({
     plugins: [

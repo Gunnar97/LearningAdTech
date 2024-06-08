@@ -1,7 +1,4 @@
 
-// import 'prebid.js/modules/adtelligentBidAdapter'
-// import pbjs from 'prebid.js';
-
 import 'virtual:plugins';
 import {div_1_sizes, div_2_sizes, PREBID_TIMEOUT} from "/src/constant.js";
 import {adUnitsF} from "/src/adUnits.js";

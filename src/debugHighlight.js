@@ -1,4 +1,5 @@
-import {createIframeProcess} from './renderWinningBids.js'
+import {createIframeProcess} from "./createIframe.js";
+
 
 export const modifyFrame = (next, iframe)=>{
     iframe.style.border = '2px solid red';
@@ -6,7 +7,4 @@ export const modifyFrame = (next, iframe)=>{
 }
 
 createIframeProcess.after(modifyFrame)
-// export function addRedFrameToElement(iframe){
-//     iframe.style.border = '2px solid red';
-//     return iframe
-// }
+

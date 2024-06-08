@@ -1,0 +1,60 @@
+@import "modern-normalize/modern-normalize.css";
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+input {
+    padding: 0;
+}
+
+figure {
+    margin: 0;
+    width: 100%;
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+
+iframe{
+    margin: 0;
+    padding: 0;
+}
