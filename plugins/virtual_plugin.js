@@ -1,4 +1,4 @@
-const modules = ['/src/debugHighlight.js']
+const modules = ['/modules/debugHighlight.modul.js', '/modules/showResultBid/ShowResultBid.modul.jsx']
 
 
 export function virtualModules(){
@@ -12,7 +12,7 @@ export function virtualModules(){
         },
         load(id) {
             if (id === 'virtual:plugins') {
-                // return 'import "/src/debugHighlight.js"'
+                // return 'import "/src/debugHighlight.modul.js"'
                 return modules.map((module) => `import '${module}';`).join('\n');
             }
             return null;

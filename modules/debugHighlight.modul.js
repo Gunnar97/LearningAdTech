@@ -1,4 +1,4 @@
-import {createIframeProcess} from "./renderWinningBids.js";
+import {createIframeProcess} from "../src/renderWinningBids.js";
 
 
 export const modifyFrame = (next, iframe)=>{

@@ -1,0 +1,53 @@
+/* Отступы и внутренние отступы */
+.table-container {
+    padding: 20px;
+    max-width: 50%;
+    margin: 100px auto;
+}
+
+
+.event-table th {
+    background-color: #f2f2f2;
+}
+
+
+.event-table th, .event-table td {
+    border: 1px solid #ddd;
+}
+
+
+.event-table td, .event-table th {
+    padding: 12px;
+}
+
+.event-table td:last-child, .event-table th:last-child {
+    text-align: right; /* Выравнивание чисел и дат по правому краю */
+}
+
+
+.event-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #333;
+}
+
+.event-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.event-table tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+
+.close-button {
+    float: right;
+    cursor: pointer;
+    padding: 5px;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.close-button:hover {
+    color: #000;
+}
