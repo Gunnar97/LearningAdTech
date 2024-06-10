@@ -13,7 +13,6 @@ trackEvents()
 
 export function renderWinningBids() {
     const winningBids = pbjs.getHighestCpmBids();
-
     if (!winningBids || winningBids.length === 0) {
         console.warn("No winning bids found.");
         return;

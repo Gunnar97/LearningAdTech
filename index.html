@@ -4,6 +4,10 @@
   <link rel="stylesheet" href="/reset_style.css">
   <script  defer src="//cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"></script>
   <script type="module" src="/main.js" defer></script>
+  <script>
+    window.wrapper = window.wrapper || {};
+    wrapper.cmd = wrapper.cmd || [];
+  </script>
   <title>Ad</title>
 </head>
 
@@ -17,12 +21,18 @@
 
 </div>
 <script>
-  // wrapper.auctionForPlacement('div-1')
+  window.wrapper.cmd.push(() => {
+    wrapper.auctionForPlacement('div-1');
+  });
 </script>
 <br>
 
 <h5>Div-2</h5>
 <div id='div-2'></div>
-
+<script>
+  window.wrapper.cmd.push(() => {
+    wrapper.auctionForPlacement('div-2');
+  });
+</script>
 </body>
 </html>
