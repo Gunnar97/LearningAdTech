@@ -1,5 +1,8 @@
 
-import {createIframeProcess} from "./createIframe.js";
+import {createHook} from "./processes.js";
+import {_createIframe} from "./createIframe.js";
+
+export const createIframeProcess = createHook('sync', _createIframe)
 
 function trackEvents(){
     pbjs.onEvent('bidWon', function(data) {
@@ -38,5 +41,14 @@ export function renderWinningBids() {
         adContainer.appendChild(iframe)
 
         pbjs.renderAd(iframe.contentWindow.document, bid.adId);
+
+        iframe.onload = () => {
+            const iframeDocument = iframe.contentWindow.document;
+            const link = iframeDocument.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = '/reset_style.css';
+            iframeDocument.head.appendChild(link);
+        };
     });
 }
