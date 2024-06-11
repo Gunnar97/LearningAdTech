@@ -36,7 +36,5 @@ export const getData = () => {
             });
             resolve(eventData);
         });
-
-
     });
 }

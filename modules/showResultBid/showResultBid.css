@@ -1,4 +1,4 @@
-/* Отступы и внутренние отступы */
+
 .table-container {
     padding: 20px;
     max-width: 95%;
@@ -21,7 +21,7 @@
 }
 
 .event-table td:last-child, .event-table th:last-child {
-    text-align: right; /* Выравнивание чисел и дат по правому краю */
+    text-align: right;
 }
 
 
