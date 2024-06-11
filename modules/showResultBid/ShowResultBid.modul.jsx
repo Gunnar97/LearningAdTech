@@ -1,12 +1,33 @@
-import createElement from "/services/JSX_create_config.js"
 import "/modules/showResultBid/showResultBid.css"
+import createElement from "/services/JSX_create_config.js"
+import {getData} from "./getData.js";
 
 const appDiv = document.getElementById('app');
+
+let isDataLoaded = false;
+let data = [];
+
+
+window.wrapper.showConsole = async () => {
+    try {
+        data = await getData();
+    } catch (error) {
+        console.error(error);
+    }
+    appDiv.innerHTML = '';
+    appDiv.appendChild(TableComponent(data));
+    const closeButton = document.querySelector('.close-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', handleClick);
+    }
+}
+
+
 
 
 function handleShowClick() {
     appDiv.innerHTML = '';
-    appDiv.appendChild(TableComponent());
+    appDiv.appendChild(TableComponent(data));
     const closeButton = document.querySelector('.close-button');
     if (closeButton) {
         closeButton.addEventListener('click', handleClick);
@@ -21,43 +42,12 @@ function handleClick() {
     const showButton = document.querySelector('.show-button');
     if (showButton) {
         showButton.addEventListener('click', handleShowClick);
-    } else {
-        console.log('Кнопка закрытия не найдена');
-    }
-}
-
-window.wrapper.showConsole = () => {
-    appDiv.innerHTML = '';
-    appDiv.appendChild(TableComponent());
-    const closeButton = document.querySelector('.close-button');
-    if (closeButton) {
-        closeButton.addEventListener('click', handleClick);
-    } else {
-        console.log('Кнопка закрытия не найдена');
     }
 }
 
 
-export  function TableComponent() {
-    const data = [
-        {
-            id: 1,
-            eventTime: '2024-06-10T08:30:00',
-            placement: 'Top',
-            eventType: 'Click',
-            eventDescription: 'User clicked on button',
-            eventArguments: 'Button ID: 123'
-        },
-        {
-            id: 2,
-            eventTime: '2024-06-11T10:15:00',
-            placement: 'Bottom',
-            eventType: 'Hover',
-            eventDescription: 'User hovered over image',
-            eventArguments: 'Image ID: 456'
-        },
 
-    ];
+export  function TableComponent(data) {
 
     return (
         <div class ="table-container">
@@ -74,13 +64,13 @@ export  function TableComponent() {
                 </tr>
                 </thead>
                 <tbody>
-                {data.map((item) => (
-                    <tr key={item.id}>
-                        <td class ="body-item">{item.eventTime}</td>
+                {data.map((item, index) => (
+                    <tr key={index}>
+                        <td class ="body-item">{item.timeS}</td>
                         <td class ="body-item">{item.placement}</td>
-                        <td class ="body-item">{item.eventType}</td>
-                        <td class ="body-item">{item.eventDescription}</td>
-                        <td class ="body-item">{item.eventArguments}</td>
+                        <td class ="body-item">{item.type}</td>
+                        <td class ="body-item">{item.description}</td>
+                        <td class ="body-item">{item.arguments}</td>
                     </tr>
                 ))}
                 </tbody>

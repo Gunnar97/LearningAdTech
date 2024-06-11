@@ -4,12 +4,7 @@ import {_createIframe} from "./createIframe.js";
 
 export const createIframeProcess = createHook('sync', _createIframe)
 
-function trackEvents(){
-    pbjs.onEvent('bidWon', function(data) {
-        // debugger
-    })
-}
-trackEvents()
+
 
 export function renderWinningBids() {
     const winningBids = pbjs.getHighestCpmBids();

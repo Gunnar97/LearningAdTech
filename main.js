@@ -5,10 +5,15 @@ import {adUnitsF} from "/src/adUnits.js";
 import {renderWinningBids} from "/src/renderWinningBids.js";
 
 
+
+
+
+
+
+
 // if(import.meta.env.VITE_ADD_RED_FRAME === '1'){
 //      import('/src/debugHighlight.modul.js')
 // }
-
 
 
 
@@ -29,6 +34,7 @@ const adUnits = adUnitsF(div_1_sizes, div_2_sizes)
             timeout: PREBID_TIMEOUT
         });
     });
+
     pbjs.processQueue();
 }
 

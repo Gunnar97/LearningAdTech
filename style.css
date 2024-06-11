@@ -1,2 +1,12 @@
 @import url("reset_style.css");
 
+.main {
+    background-color: #eef3ff;
+    width: 1280px;
+    margin: 0 auto;
+}
+
+.title{
+    text-align: center;
+    font-size: 32px;
+}
