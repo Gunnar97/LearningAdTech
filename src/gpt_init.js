@@ -66,21 +66,22 @@ googletag.cmd.push(() => {
         return defineSlot_old.call(googletag, adUnitPath, sizes, div)
     } 
 })
-
-googletag.cmd.push(() => {
-    const display_old = googletag.display
-    googletag.display = function (div) {
-        const slots = googletag.pubads().getSlots()
-        const div_slot = slots.find(slot => slot.getSlotElementId() === div)
-        const slot_sizes = div_slot.getSizes().map(size => {
-            return [size.width, size.height]
-        })
-        setInterval(() => {
-            pbjs.que.push(run(div_slot.getAdUnitPath(), slot_sizes))
-        }, config.refreshTimeSeconds * 1000)
-        display_old.call(googletag, div)
-    }
-})
+if (config.ad_refresh) {
+    googletag.cmd.push(() => {
+        const display_old = googletag.display
+        googletag.display = function (div) {
+            const slots = googletag.pubads().getSlots()
+            const div_slot = slots.find(slot => slot.getSlotElementId() === div)
+            const slot_sizes = div_slot.getSizes().map(size => {
+                return [size.width, size.height]
+            })
+            setInterval(() => {
+                pbjs.que.push(run(div_slot.getAdUnitPath(), slot_sizes))
+            }, config.refreshTimeSeconds * 1000)
+            display_old.call(googletag, div)
+        }
+    })
+}
 
 googletag.cmd.push(...googleQue)
 

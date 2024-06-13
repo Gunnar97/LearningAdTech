@@ -14,45 +14,23 @@
     googletag.cmd.push(() => {
       // Define an ad slot for div with id "banner-ad".
       googletag
-              .defineSlot("/19968336/header-bid-tag-0", [300, 600], "div-1")
+              .defineSlot("/19968336/header-bid-tag-0", [300, 600], "banner-ad")
               .addService(googletag.pubads());
 
       googletag.pubads().enableSingleRequest();
       googletag.enableServices();
-    });
-
-    googletag.cmd.push(() => {
-      // Define an ad slot for div with id "banner-ad".
-      googletag
-              .defineSlot("/19968336/header-bid-tag-1", [300, 250], "div-2")
-              .addService(googletag.pubads());
-
-      googletag.pubads().enableSingleRequest();
-      googletag.enableServices();
-    });
+    })
   </script>
     <h2>Manual Prebid.js Example</h2>
 
     <!-- <a href="./example.html">Example</a> -->
 
     <h5>Div-1</h5>
-    <div id="div-1">
+    <div id="banner-ad">
       <script>
         googletag.cmd.push(() => {
           // Request and render an ad for the "banner-ad" slot.
-          googletag.display("div-1");
-        });
-      </script>
-    </div>
-
-    <br />
-
-    <h5>Div-2</h5>
-    <div id="div-2">
-      <script>
-        googletag.cmd.push(() => {
-          // Request and render an ad for the "banner-ad" slot.
-          googletag.display("div-2");
+          googletag.display("banner-ad");
         });
       </script>
     </div>
