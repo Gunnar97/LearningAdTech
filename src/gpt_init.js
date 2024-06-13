@@ -1,9 +1,9 @@
 import { adUnitsF } from "./adUnits";
 import { PREBID_TIMEOUT } from "./constant";
+import config from "./config";
 
 // wrapper
 window.wrapper = window.wrapper || {}
-wrapper.SRA = wrapper.SRA || false
 
 window.googletag = window.googletag || { cmd: [] }
 
@@ -53,19 +53,36 @@ function runAuction() {
 
 const runAuctionDebounced = debounce(runAuction, 10);
 
+const run = (adUnitPath, sizes) => () => {
+    adUnitsCache.push(adUnitsF(adUnitPath, sizes))
+    if (config.sra) {
+        runAuctionDebounced();
+    } else {
+        runAuction();
+    }
+}
+
 googletag.cmd.push(() => {
     const defineSlot_old = googletag.defineSlot
     googletag.defineSlot = function(adUnitPath, sizes, div) {
-        pbjs.que.push(() => {
-            adUnitsCache.push(adUnitsF(adUnitPath, sizes))
-            if (wrapper.SRA) {
-                runAuctionDebounced();
-            } else {
-                runAuction();
-            }
-        });
+        pbjs.que.push(run(adUnitPath, sizes))
         return defineSlot_old.call(googletag, adUnitPath, sizes, div)
     } 
+})
+
+googletag.cmd.push(() => {
+    const display_old = googletag.display
+    googletag.display = function (div) {
+        const slots = googletag.pubads().getSlots()
+        const div_slot = slots.find(slot => slot.getSlotElementId() === div)
+        const slot_sizes = div_slot.getSizes().map(size => {
+            return [size.width, size.height]
+        })
+        setInterval(() => {
+            pbjs.que.push(run(div_slot.getAdUnitPath(), slot_sizes))
+        }, config.refreshTimeSeconds * 1000)
+        display_old.call(googletag, div)
+    }
 })
 
 googletag.cmd.push(...googleQue)
