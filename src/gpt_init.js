@@ -2,9 +2,6 @@ import { adUnitsF } from "./adUnits";
 import { PREBID_TIMEOUT } from "./constant";
 import config from "./config";
 
-// wrapper
-window.wrapper = window.wrapper || {}
-
 window.googletag = window.googletag || { cmd: [] }
 
 const googleQue = [...googletag.cmd]
