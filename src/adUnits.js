@@ -1,6 +1,5 @@
 export const adUnitsF = (code, div_sizes) => {
-  return [
-    {
+  return {
       code: code,
       mediaTypes: {
         banner: {
@@ -16,5 +15,4 @@ export const adUnitsF = (code, div_sizes) => {
         },
       ],
     }
-  ];
-};
+}

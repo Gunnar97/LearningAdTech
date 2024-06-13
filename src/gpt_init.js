@@ -2,8 +2,8 @@ import { adUnitsF } from "./adUnits";
 import { PREBID_TIMEOUT } from "./constant";
 
 // wrapper
-// window.wrapper = window.wrapper || {}
-// wrapper.SRA = wrapper.SRA || false
+window.wrapper = window.wrapper || {}
+wrapper.SRA = wrapper.SRA || false
 
 window.googletag = window.googletag || { cmd: [] }
 
@@ -14,36 +14,23 @@ googletag.cmd.push(function() {
     googletag.pubads().disableInitialLoad();
 });
 
-// function debounce(func, wait, immediate) {
-//     let timeout;
-//     return function () {
-//         const context = this,
-//             args = arguments;
-//         const later = function () {
-//             timeout = null;
-//             if (!immediate) func.apply(context, args);
-//         };
-//         const callNow = immediate && !timeout;
-//         clearTimeout(timeout);
-//         timeout = setTimeout(later, wait);
-//         if (callNow) func.apply(context, args);
-//     };
-// }
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+        const context = this,
+            args = arguments;
+        const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
 
-// const adUnitsCache = [];
-
-// function runAuction() {
-//     const elementIds = placementsCache.slice(0);
-//     placementsCache.length = 0;
-//     pbjs.requestBids({
-//         adUnits: adUnitsCache,
-//         bidsBackHandler: renderWinningBids,
-//         timeout: PREBID_TIMEOUT,
-//     });
-// }
-
-function initAdserver(bids) {
-    console.log(bids)
+function initAdserver() {
     googletag.cmd.push(function() {
         pbjs.que.push(function() {
             pbjs.setTargetingForGPTAsync();
@@ -52,23 +39,34 @@ function initAdserver(bids) {
     });
 }
 
+const adUnitsCache = [];
+
+function runAuction() {
+    const adUnits = [...adUnitsCache];
+    adUnitsCache.length = 0;
+    pbjs.requestBids({
+        adUnits: adUnits,
+        bidsBackHandler: initAdserver,
+        timeout: PREBID_TIMEOUT,
+    });
+}
+
+const runAuctionDebounced = debounce(runAuction, 10);
+
 googletag.cmd.push(() => {
     const defineSlot_old = googletag.defineSlot
     googletag.defineSlot = function(adUnitPath, sizes, div) {
-        console.log("def")
-        // pbjs.addAdUnits(adUnitsF(adUnitPath, sizes))
-        pbjs.que.push(function() {
-            pbjs.requestBids({
-                adUnits: adUnitsF(adUnitPath, sizes),
-                bidsBackHandler: initAdserver,
-                timeout: PREBID_TIMEOUT
-            });
+        pbjs.que.push(() => {
+            adUnitsCache.push(adUnitsF(adUnitPath, sizes))
+            if (wrapper.SRA) {
+                runAuctionDebounced();
+            } else {
+                runAuction();
+            }
         });
-
         return defineSlot_old.call(googletag, adUnitPath, sizes, div)
     } 
 })
-
 
 googletag.cmd.push(...googleQue)
 
