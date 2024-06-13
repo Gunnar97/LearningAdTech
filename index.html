@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script
-      defer
-      src="//cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"
-    ></script>
-    <script type="module" src="/main.js" defer></script>
+    <script defer src="//cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"></script>
+    <script type="module" src="/main.js"></script>
     <title>Ad</title>
   </head>
 
   <body>
-  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
   <script>
     window.googletag = window.googletag || { cmd: [] };
+
 
     googletag.cmd.push(() => {
       // Define an ad slot for div with id "banner-ad".
       googletag
-              .defineSlot("/6355419/Travel/Europe/France/Paris", [300, 250], "div-1")
+              .defineSlot("/19968336/header-bid-tag-0", [300, 600], "div-1")
               .addService(googletag.pubads());
 
-      // Enable the PubAdsService.
+      googletag.pubads().enableSingleRequest();
+      googletag.enableServices();
+    });
+
+    googletag.cmd.push(() => {
+      // Define an ad slot for div with id "banner-ad".
+      googletag
+              .defineSlot("/19968336/header-bid-tag-1", [300, 250], "div-2")
+              .addService(googletag.pubads());
+
+      googletag.pubads().enableSingleRequest();
       googletag.enableServices();
     });
   </script>
@@ -41,6 +48,13 @@
     <br />
 
     <h5>Div-2</h5>
-    <div id="div-2"></div>
+    <div id="div-2">
+      <script>
+        googletag.cmd.push(() => {
+          // Request and render an ad for the "banner-ad" slot.
+          googletag.display("div-2");
+        });
+      </script>
+    </div>
   </body>
 </html>

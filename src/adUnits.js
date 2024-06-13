@@ -1,10 +1,10 @@
-export const adUnitsF = (div_1_sizes, div_2_sizes) => {
+export const adUnitsF = (code, div_sizes) => {
   return [
     {
-      code: 'div-1',
+      code: code,
       mediaTypes: {
         banner: {
-          sizes: div_1_sizes,
+          sizes: div_sizes,
         },
       },
       bids: [
@@ -15,22 +15,6 @@ export const adUnitsF = (div_1_sizes, div_2_sizes) => {
           },
         },
       ],
-    },
-    {
-      code: 'div-2',
-      mediaTypes: {
-        banner: {
-          sizes: div_2_sizes,
-        },
-      },
-      bids: [
-        {
-          bidder: "adtelligent",
-          params: {
-            aid: 350975,
-          },
-        },
-      ],
-    },
+    }
   ];
 };

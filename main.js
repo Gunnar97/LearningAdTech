@@ -6,7 +6,7 @@ import { div_1_sizes, div_2_sizes, PREBID_TIMEOUT } from "/src/constant.js";
 import { adUnitsF } from "/src/adUnits.js";
 import { renderWinningBids } from "/src/renderWinningBids.js";
 import "./src/queue.js";
-import { logEvent, showConsole } from "./src/eventConsole.js";
+// import { logEvent, showConsole } from "./src/eventConsole.js";
 
 // if(import.meta.env.VITE_ADD_RED_FRAME === '1'){
 //      import('/src/debugHighlight.js')
@@ -18,6 +18,8 @@ import { logEvent, showConsole } from "./src/eventConsole.js";
 //     timeout: PREBID_TIMEOUT,
 //   });
 // });
+
+import './src/gpt_init.js'
 
 function debounce(func, wait, immediate) {
     let timeout;
@@ -64,6 +66,6 @@ export function auctionForPlacement(elementId) {
 window.wrapper = window.wrapper || {};
 wrapper.cmd = wrapper.cmd || [];
 wrapper.auctionForPlacement = auctionForPlacement;
-wrapper.showConsole = showConsole;
+// wrapper.showConsole = showConsole;
 
-// pbjs.processQueue();
+

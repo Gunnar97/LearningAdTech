@@ -1,4 +1,5 @@
 (function () {
+    window.wrapper = window.wrapper || { cmd: [] }
     let queueProcessed = false;
 
     function processQueue() {
