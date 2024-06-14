@@ -95,7 +95,7 @@ if (config.ad_refresh) {
                     })
             }, config.refreshTimeSeconds * 1000)
             placements[div].auctionInProgressPromise.then(() => {
-                googletag.pubads().refresh();
+                googletag.pubads().refresh([div_slot]);
             })
             // display_old.call(googletag, div)
         }
