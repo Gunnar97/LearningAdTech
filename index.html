@@ -14,15 +14,18 @@
   <script>
     window.googletag = window.googletag || { cmd: [] };
 
-    googletag.cmd.push(() => {
-      // Define an ad slot for div with id "banner-ad".
-      googletag
-              .defineSlot("/6355419/Travel/Europe/France/Paris", [300, 250], "div-1")
-              .addService(googletag.pubads());
-      googletag.defineSlot("/6355419/Travel/Europe/France/Paris", [300, 250], "div-2")
-              .addService(googletag.pubads());
+    googletag.cmd.push(()=>{
+      googletag.pubads().disableInitialLoad();
+    })
 
-      // Enable the PubAdsService.
+    googletag.cmd.push(function() {
+      googletag.defineSlot('/19968336/header-bid-tag-0', [300, 250], 'div-1').addService(googletag.pubads());
+      googletag.pubads().enableSingleRequest();
+      googletag.enableServices();
+    });
+    googletag.cmd.push(function() {
+      googletag.defineSlot('/19968336/header-bid-tag-1', [300, 250], 'div-2').addService(googletag.pubads());
+      googletag.pubads().enableSingleRequest();
       googletag.enableServices();
     });
   </script>

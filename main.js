@@ -1,23 +1,10 @@
-// import 'prebid.js/modules/adtelligentBidAdapter'
-// import pbjs from 'prebid.js';
-
 import "virtual:plugins";
 import { div_1_sizes, div_2_sizes, PREBID_TIMEOUT } from "/src/constant.js";
 import { adUnitsF } from "/src/adUnits.js";
-import { renderWinningBids } from "/src/renderWinningBids.js";
-import "./src/queue.js";
-import { logEvent, showConsole } from "./src/eventConsole.js";
+// import { renderWinningBids } from "/src/renderWinningBids.js";
+// import "./src/queue.js";
+// import { logEvent, showConsole } from "./src/eventConsole.js";
 
-// if(import.meta.env.VITE_ADD_RED_FRAME === '1'){
-//      import('/src/debugHighlight.js')
-// }
-// pbjs.que.push(() => {
-//   pbjs.addAdUnits(adUnitsF(div_1_sizes, div_2_sizes));
-//   pbjs.requestBids({
-//     bidsBackHandler: renderWinningBids,
-//     timeout: PREBID_TIMEOUT,
-//   });
-// });
 
 function debounce(func, wait, immediate) {
     let timeout;
@@ -42,10 +29,24 @@ function runAuction() {
     placementsCache.length = 0;
     pbjs.requestBids({
         adUnits: adUnitsF(div_1_sizes, div_2_sizes).filter((adUnit) => elementIds.includes(adUnit.code)),
-        bidsBackHandler: renderWinningBids,
+        bidsBackHandler: initAdserver,
         timeout: PREBID_TIMEOUT,
     });
 }
+
+
+function initAdserver() {
+    if (pbjs.initAdserverSet) return;
+    pbjs.initAdserverSet = true;
+    googletag.cmd.push(function() {
+        pbjs.que.push(function() {
+            pbjs.setTargetingForGPTAsync();
+            googletag.pubads().refresh();
+        });
+    });
+}
+
+
 
 const runAuctionDebounced = debounce(runAuction, 10);
 
@@ -64,6 +65,6 @@ export function auctionForPlacement(elementId) {
 window.wrapper = window.wrapper || {};
 wrapper.cmd = wrapper.cmd || [];
 wrapper.auctionForPlacement = auctionForPlacement;
-wrapper.showConsole = showConsole;
+// wrapper.showConsole = showConsole;
 
 // pbjs.processQueue();
