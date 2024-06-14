@@ -1,15 +1,17 @@
 import { adUnitsF } from "./adUnits";
 import { PREBID_TIMEOUT } from "./constant";
 import config from "./config";
+import { renderWinningBids } from "./renderWinningBids.js";
 
 window.googletag = window.googletag || { cmd: [] }
 
 const googleQue = [...googletag.cmd]
 googletag.cmd.length = 0
 
-googletag.cmd.push(function() {
+googletag.cmd.push(function () {
     googletag.pubads().disableInitialLoad();
 });
+
 
 function debounce(func, wait, immediate) {
     let timeout;
@@ -18,53 +20,64 @@ function debounce(func, wait, immediate) {
             args = arguments;
         const later = function () {
             timeout = null;
-            if (!immediate) func.apply(context, args);
+            if (!immediate) return func.apply(context, args);
         };
         const callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
+        if (callNow) return func.apply(context, args);
     };
 }
 
 function initAdserver() {
-    googletag.cmd.push(function() {
-        pbjs.que.push(function() {
-            pbjs.setTargetingForGPTAsync();
-            googletag.pubads().refresh();
-        });
+    googletag.cmd.push(function () {
+        pbjs.setTargetingForGPTAsync();
     });
 }
 
 const adUnitsCache = [];
 
 function runAuction() {
-    const adUnits = [...adUnitsCache];
-    adUnitsCache.length = 0;
-    pbjs.requestBids({
-        adUnits: adUnits,
-        bidsBackHandler: initAdserver,
-        timeout: PREBID_TIMEOUT,
-    });
+    return new Promise((resolve) => {
+        const adUnits = [...adUnitsCache];
+        adUnitsCache.length = 0;
+        pbjs.requestBids({
+            adUnits: adUnits,
+            bidsBackHandler: (...args) => {
+                initAdserver(...args)
+                resolve()
+            },
+            timeout: PREBID_TIMEOUT,
+        });
+    })
 }
 
 const runAuctionDebounced = debounce(runAuction, 10);
 
-const run = (adUnitPath, sizes) => () => {
+const run = (adUnitPath, sizes) => {
     adUnitsCache.push(adUnitsF(adUnitPath, sizes))
     if (config.sra) {
         runAuctionDebounced();
+        return new Promise((resolve) => {
+            pbjs.onEvent('auctionEnd', (...args) => {
+                if (!args[0].adUnitCodes.includes(adUnitPath)) return;
+                resolve()
+            })
+        })
     } else {
-        runAuction();
+        return runAuction();
     }
 }
 
+
+const placements = {};
 googletag.cmd.push(() => {
     const defineSlot_old = googletag.defineSlot
-    googletag.defineSlot = function(adUnitPath, sizes, div) {
-        pbjs.que.push(run(adUnitPath, sizes))
+    googletag.defineSlot = function (adUnitPath, sizes, div) {
+        placements[div] = { adUnitPath, sizes, auctionInProgressPromise: run(div, sizes) }
+
         return defineSlot_old.call(googletag, adUnitPath, sizes, div)
-    } 
+    }
 })
 if (config.ad_refresh) {
     googletag.cmd.push(() => {
@@ -76,9 +89,15 @@ if (config.ad_refresh) {
                 return [size.width, size.height]
             })
             setInterval(() => {
-                pbjs.que.push(run(div_slot.getAdUnitPath(), slot_sizes))
+                run(div_slot.getSlotElementId(), slot_sizes)
+                    .then(() => {
+                        renderWinningBids();
+                    })
             }, config.refreshTimeSeconds * 1000)
-            display_old.call(googletag, div)
+            placements[div].auctionInProgressPromise.then(() => {
+                googletag.pubads().refresh();
+            })
+            // display_old.call(googletag, div)
         }
     })
 }

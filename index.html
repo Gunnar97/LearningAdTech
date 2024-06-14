@@ -14,9 +14,11 @@
     googletag.cmd.push(() => {
       // Define an ad slot for div with id "banner-ad".
       googletag
-              .defineSlot("/19968336/header-bid-tag-0", [300, 600], "banner-ad")
+              .defineSlot("/19968336/header-bid-tag-0", [300, 250], "banner-ad")
               .addService(googletag.pubads());
-
+      googletag
+              .defineSlot("/19968336/header-bid-tag-1", [300, 250], "banner-ad2")
+              .addService(googletag.pubads());
       googletag.pubads().enableSingleRequest();
       googletag.enableServices();
     })
@@ -31,6 +33,14 @@
         googletag.cmd.push(() => {
           // Request and render an ad for the "banner-ad" slot.
           googletag.display("banner-ad");
+        });
+      </script>
+    </div>
+  <div id="banner-ad2">
+      <script>
+        googletag.cmd.push(() => {
+          // Request and render an ad for the "banner-ad" slot.
+          googletag.display("banner-ad2");
         });
       </script>
     </div>
