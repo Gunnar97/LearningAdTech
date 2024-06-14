@@ -19,6 +19,8 @@
       googletag
               .defineSlot("/6355419/Travel/Europe/France/Paris", [300, 250], "div-1")
               .addService(googletag.pubads());
+      googletag.defineSlot("/6355419/Travel/Europe/France/Paris", [300, 250], "div-2")
+              .addService(googletag.pubads());
 
       // Enable the PubAdsService.
       googletag.enableServices();
@@ -41,6 +43,12 @@
     <br />
 
     <h5>Div-2</h5>
-    <div id="div-2"></div>
+    <div id="div-2">
+      <script>
+        googletag.cmd.push(() => {
+          googletag.display("div-2");
+        });
+      </script>
+    </div>
   </body>
 </html>
