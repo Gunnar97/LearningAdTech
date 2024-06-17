@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="/style.css">
-  <script  defer src="//cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"></script>
-  <script type="module" src="/main.js" ></script>
-  <script>
-    window.wrapper = window.wrapper || {};
-    wrapper.cmd = wrapper.cmd || [];
-  </script>
+  <script defer src="//cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"></script>
+  <script defer src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+  <script type="module" src="/main.js"></script>
   <title>Ad</title>
 </head>
 
 <body>
-<section class="main">
-<h1 class="title">Manual Prebid.js Example</h1>
+<script>
+  window.googletag = window.googletag || { cmd: [] };
 
-
+   const div_1_sizes = [
+    [300, 250],
+    [300, 600]
+  ];
+  const div_2_sizes = [
+    [728, 90],
+    [970, 250]
+  ];
+  googletag.cmd.push(() => {
+    googletag
+            .defineSlot("/19968336/header-bid-tag-0", div_1_sizes, "div-1")
+            .addService(googletag.pubads());
+    googletag
+            .defineSlot("/19968336/header-bid-tag-1", div_2_sizes, "div-2")
+            .addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  })
+</script>
+<h2>Manual Prebid.js Example</h2>
 
 <h5>Div-1</h5>
-<div id='div-1'>
-
+<div id="div-1">
+  <script>
+    googletag.cmd.push(() => {
+      googletag.display("div-1");
+    });
+  </script>
 </div>
-<script>
-  window.wrapper.cmd.push(() => {
-    wrapper.auctionForPlacement('div-1');
-  });
-</script>
-<br>
-
 <h5>Div-2</h5>
-<div id='div-2'></div>
-<script>
-  window.wrapper.cmd.push(() => {
-    wrapper.auctionForPlacement('div-2');
-  });
-</script>
-  </section>
+<div id="div-2">
+  <script>
+    googletag.cmd.push(() => {
+      googletag.display("div-2");
+    });
+  </script>
+</div>
 </body>
 </html>

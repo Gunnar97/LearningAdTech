@@ -24,7 +24,7 @@ function eventData(eventType, args) {
         placement: args.adUnitCode || args.adUnitCodes.toString() || "N/A",
         description: eventType,
         type: eventType,
-        arguments: Object.values({
+        arguments: Object.entries({
             bidderCode: args.bidderCode || "N/A",
             statusMessage: args.statusMessage || "N/A",
             adId: args.adId || "N/A",
@@ -32,7 +32,8 @@ function eventData(eventType, args) {
             transactionId: args.transactionId || "N/A",
             adUnitId: args.adUnitId || "N/A",
             mediaType: args.mediaType || "N/A",
-        }).join(', '),
+        }).map(([key, value]) => `${key}: ${value}`).join(', ')
+        ,
     };
     if (eventLog.placement !== "N/A") {
         data.push(eventLog);
