@@ -3,7 +3,7 @@
 <head>
   <link rel="stylesheet" href="/style.css">
   <script  defer src="//cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"></script>
-  <script type="module" src="/main.js" defer></script>
+  <script type="module" src="/main.js" ></script>
   <script>
     window.wrapper = window.wrapper || {};
     wrapper.cmd = wrapper.cmd || [];
@@ -15,7 +15,7 @@
 <section class="main">
 <h1 class="title">Manual Prebid.js Example</h1>
 
-<a href="./example.html">Example</a>
+
 
 <h5>Div-1</h5>
 <div id='div-1'>
@@ -34,12 +34,6 @@
   window.wrapper.cmd.push(() => {
     wrapper.auctionForPlacement('div-2');
   });
-</script>
-<div id="app"></div>
-<script>
-  wrapper.cmd.push(()=>{
-    wrapper.showConsole()
-  })
 </script>
   </section>
 </body>

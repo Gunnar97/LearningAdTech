@@ -5,21 +5,6 @@ import {adUnitsF} from "/src/adUnits.js";
 import {renderWinningBids} from "/src/renderWinningBids.js";
 
 
-
-
-
-
-
-
-// if(import.meta.env.VITE_ADD_RED_FRAME === '1'){
-//      import('/src/debugHighlight.modul.js')
-// }
-
-
-
-
-
-
 export function auctionForPlacement(elementId) {
     const adContainer = document.getElementById(elementId);
     if (!adContainer) {
@@ -27,6 +12,7 @@ export function auctionForPlacement(elementId) {
         return;
     }
 const adUnits = adUnitsF(div_1_sizes, div_2_sizes)
+    pbjs.adUnits = [];
     pbjs.que.push(() => {
         pbjs.addAdUnits(adUnits.filter(adUnit=> adUnit.code===elementId))
         pbjs.requestBids({
@@ -40,6 +26,4 @@ const adUnits = adUnitsF(div_1_sizes, div_2_sizes)
 
 
 window.wrapper.auctionForPlacement = auctionForPlacement;
-
 window.wrapper.processQueue();
-
