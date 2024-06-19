@@ -1,4 +1,4 @@
-import '/src/queue_init.js'
+import { initQueue } from '/src/queue_init.js'
 import 'virtual:plugins';
 import {CONFIG, PREBID_TIMEOUT} from "/src/constant.js";
 import {adUnitsF} from "/src/adUnits.js";
@@ -6,7 +6,7 @@ import {renderWinningBids} from "/src/renderWinningBids.js";
 import {debounce} from "./src/debounce.js";
 import {initAdserver} from "./src/initAdserver.js";
 
-
+initQueue();
 window.googletag = window.googletag || { cmd: [] }
 
 const googleQue = [...googletag.cmd]

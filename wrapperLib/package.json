@@ -4,15 +4,19 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "release": "release-it --no-npm",
-    "deploy": "bash deploy.sh"
+    "deploy": "bash deploy.sh",
+    "fullprocess": "npm-p series release build deploy"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.24.7",
     "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-istanbul": "^1.6.0",
     "vite": "^5.2.0",
     "vite-plugin-inspect": "^0.8.4"
   },
