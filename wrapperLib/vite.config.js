@@ -2,12 +2,16 @@ import { defineConfig } from 'vite';
 import Inspect from 'vite-plugin-inspect'
 import {virtualModules} from "./plugins/virtual_plugin.js";
 import reactRefresh from '@vitejs/plugin-react-refresh';
+import banner from 'vite-plugin-banner'
+import { version } from "./package.json";
+
 
 export default defineConfig({
     plugins: [
         Inspect(),
         virtualModules(),
-        reactRefresh()
+        reactRefresh(),
+        banner(version)
        ],
 
     root: './',
