@@ -8,6 +8,6 @@ app.get('/', (req, res) => {
     res.send('ok')
 })
 
-app.listen(5001, () => {
-    console.log('Server is running on port 5001');
+app.listen(80, () => {
+    console.log('Server is running on port 80');
 })

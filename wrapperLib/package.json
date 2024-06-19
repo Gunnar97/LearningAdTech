@@ -9,14 +9,15 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "release": "release-it --no-npm",
+    "release": "release-it --no-npm.publish",
     "deploy": "bash deploy.sh",
-    "fullprocess": "npm-p series release build deploy"
+    "fullprocess": "run-s release build deploy"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.24.7",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-istanbul": "^1.6.0",
+    "npm-run-all": "^4.1.5",
     "vite": "^5.2.0",
     "vite-plugin-inspect": "^0.8.4"
   },
