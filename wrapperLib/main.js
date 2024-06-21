@@ -1,8 +1,29 @@
 import { initQueue } from '/src/queueInit.js'
 import 'virtual:plugins';
-import {CONFIG} from "/src/constant.js";
+import {EVENTS , CONFIG} from "/src/constant.js";
 import {renderWinningBids} from "/src/renderWinningBids.js";
 import {run} from "./src/run.js";
+import { recordEvent } from "./src/reporting.js";
+
+
+function getScriptPerformanceEntry(scriptName) {
+    const entries = performance.getEntriesByType('resource');
+    return entries.find(entry => entry.name.includes(scriptName));
+}
+
+const wrapperPerformance = getScriptPerformanceEntry('main.js');
+recordEvent(EVENTS.INIT, {
+    time: Date.now(),
+    timeSincePageLoad: Math.round(performance.now()),
+    timeToLoad: Math.round(wrapperPerformance.duration),
+})
+
+recordEvent(EVENTS.ERROR, {
+    time: Date.now(),
+    timeSincePageLoad: Math.round(performance.now()),
+    timeToLoad: Math.round(wrapperPerformance.duration),
+    message: 'Error loading wrapper',
+})
 
 
 

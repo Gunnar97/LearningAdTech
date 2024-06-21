@@ -1,3 +1,5 @@
+export { EVENTS } from 'server/constants.js';
+
 export const div_1_sizes = [
     [300, 250],
     [300, 600]

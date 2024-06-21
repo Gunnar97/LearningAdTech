@@ -13,7 +13,7 @@ beforeEach(() => {
 
 global.pbjs = {
     getHighestCpmBids: vi.fn(),
-    renderAd: vi.fn()
+    renderAd: vi.fn(()=>{})
 };
 
 

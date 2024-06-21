@@ -1,15 +1,24 @@
-export function debounce(func, wait, immediate) {
+export function debounce(func, wait, maxTime) {
     let timeout;
+    let maxTimeoutID
+
     return function () {
         const context = this,
             args = arguments;
+        if (maxTime && !maxTimeoutID) {
+            maxTimeoutID = setTimeout(() => {
+                func.apply(context, args);
+            }, maxTime)
+        }
+
         const later = function () {
-            timeout = null;
-            if (!immediate) return func.apply(context, args);
+             timeout = null;
+             maxTimeoutID = null
+             clearTimeout(maxTimeoutID)
+             return func.apply(context, args);
         };
-        const callNow = immediate && !timeout;
+
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
-        if (callNow) return func.apply(context, args);
     };
 }
