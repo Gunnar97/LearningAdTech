@@ -1,10 +1,10 @@
 import { initQueue } from '/src/queueInit.js'
-// import 'virtual:plugins';
-import {CONFIG, PREBID_TIMEOUT} from "/src/constant.js";
-import {adUnitsF} from "/src/adUnits.js";
+import 'virtual:plugins';
+import {CONFIG} from "/src/constant.js";
 import {renderWinningBids} from "/src/renderWinningBids.js";
-import {debounce} from "./src/debounce.js";
-import {initAdserver} from "./src/initAdserver.js";
+import {run} from "./src/run.js";
+
+
 
 initQueue();
 window.googletag = window.googletag || { cmd: [] }
@@ -15,41 +15,6 @@ googletag.cmd.length = 0
 googletag.cmd.push(function () {
     googletag.pubads().disableInitialLoad();
 });
-
-const adUnitsCache = [];
-
-export function runAuction() {
-    return new Promise((resolve) => {
-        const adUnits = [...adUnitsCache];
-        adUnitsCache.length = 0;
-        pbjs.requestBids({
-            adUnits: adUnits,
-            bidsBackHandler: (...args) => {
-                initAdserver(...args)
-                resolve()
-            },
-            timeout: PREBID_TIMEOUT,
-        });
-    })
-}
-
-const runAuctionDebounced = debounce(runAuction, 10);
-
-const run = (adUnitPath, sizes) => {
-    adUnitsCache.push(adUnitsF(adUnitPath, sizes))
-    if (CONFIG.sra) {
-        runAuctionDebounced();
-        return new Promise((resolve) => {
-            pbjs.onEvent('auctionEnd', (...args) => {
-                if (!args[0].adUnitCodes.includes(adUnitPath)) return;
-                resolve()
-            })
-        })
-    } else {
-        return runAuction();
-    }
-}
-
 
 const placements = {};
 googletag.cmd.push(() => {
@@ -93,8 +58,6 @@ if (CONFIG.ad_refresh) {
 }
 
 googletag.cmd.push(...googleQue);
-
-
 
 window.wrapper = window.wrapper || {};
 wrapper.cmd = wrapper.cmd || [];

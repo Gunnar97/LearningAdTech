@@ -10,7 +10,7 @@ export const PREBID_TIMEOUT = 1000;
 export const FAILSAFE_TIMEOUT = 3000;
 
 export const CONFIG ={
-    sra: true,
+    sra: false,
     ad_refresh: false,
     refreshTimeSeconds: 15,
 }
