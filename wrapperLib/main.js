@@ -1,5 +1,5 @@
-import { initQueue } from '/src/queue_init.js'
-import 'virtual:plugins';
+import { initQueue } from '/src/queueInit.js'
+// import 'virtual:plugins';
 import {CONFIG, PREBID_TIMEOUT} from "/src/constant.js";
 import {adUnitsF} from "/src/adUnits.js";
 import {renderWinningBids} from "/src/renderWinningBids.js";
@@ -18,7 +18,7 @@ googletag.cmd.push(function () {
 
 const adUnitsCache = [];
 
-function runAuction() {
+export function runAuction() {
     return new Promise((resolve) => {
         const adUnits = [...adUnitsCache];
         adUnitsCache.length = 0;

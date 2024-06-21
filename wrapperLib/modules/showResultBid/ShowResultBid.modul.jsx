@@ -1,6 +1,6 @@
 import "/modules/showResultBid/showResultBid.css"
 import createElement from "/services/JSX_create_config.js"
-import { addToQueue } from "../../src/queue_init.js";
+import { addToQueue } from "../../src/queueInit.js";
 
 const appDiv = document.createElement('div');
 appDiv.id = 'app';

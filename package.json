@@ -3,11 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "scripts": {
-
-  },
+  "scripts": {},
   "workspaces": [
     "server",
     "wrapperLib"
-  ]
+  ],
+  "dependencies": {
+    "@rollup/rollup-linux-x64-gnu": "^4.18.0",
+    "jsdom": "^24.1.0"
+  }
 }
