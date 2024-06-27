@@ -3,5 +3,9 @@
 export const EVENTS = {
     INIT: 0,
     ERROR: 1,
+BIDREQUESTED:2,
+    BIDRESPONSE:3,
+    ADRENDERSUCCEEDED:4,
     MAX_CACHE_LEN: 100_000,
+
 }

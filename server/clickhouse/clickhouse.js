@@ -1,11 +1,11 @@
 import { ClickHouse } from 'clickhouse';
 
 const clickhouse = new ClickHouse({
-    url: 'http://127.0.0.1',
-    port: 8123,
+    url: process.env.CLICKHOUSE_URL,
+    port: process.env.CLICKHOUSE_PORT,
     debug: false,
     basicAuth: null,
-    isUseGzip: false,
+    isUseGzip: true,
     format: "json",
     raw: false,
     config: {

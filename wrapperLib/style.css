@@ -11,3 +11,10 @@
     font-size: 32px;
 }
 
+#eventChartContainer, #closeButton {
+    display: none;
+}
+button{
+    margin: 5px;
+    padding: 5px;
+}

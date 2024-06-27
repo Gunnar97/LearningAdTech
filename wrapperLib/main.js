@@ -5,7 +5,7 @@ import 'virtual:plugins';
 import {EVENTS , CONFIG} from "/src/constant.js";
 import {renderWinningBids} from "/src/renderWinningBids.js";
 import {run} from "./src/run.js";
-import { recordEvent } from "./src/reporting.js";
+import { recordEvent } from "./src/reporting/reporting.js";
 
 
 function getScriptPerformanceEntry(scriptName) {
@@ -27,37 +27,34 @@ recordEvent(EVENTS.ERROR, {
     message: 'Error loading wrapper',
 })
 
-    pbjs.onEvent('bidRequested', (data) => {
-        data.bids.forEach(bid => {
-            recordEvent(2, {
-                time: Math.floor(Date.now() / 1000),
-                bidderCode: bid.bidderCode.toString(),
-                unitCode: bid.adUnitCode.toString(),
-                cpm: bid.cpm,
+pbjs.onEvent('bidRequested', (data) => {
 
-            })
-        })
-
-    })
-
-    pbjs.onEvent('bidResponse', (data) => {
-        recordEvent(3, {
+    data.bids.forEach(bid => {
+        recordEvent(EVENTS.BIDREQUESTED, {
             time: Math.floor(Date.now() / 1000),
-            bidderCode: data.bidderCode.toString(),
-            unitCode: data.adUnitCode.toString(),
-            cpm: data.cpm,
+            bidderCode: bid.bidder,
+            unitCode: bid.adUnitCode
         })
     })
 
-    pbjs.onEvent('adRenderSucceeded', data => {
-        recordEvent(4, {
-            time: Math.floor(Date.now() / 1000),
-            bidderCode: data.bidderCode.toString(),
-            unitCode: data.adUnitCode.toString(),
-            cpm: data.cpm,
-        })
-    })
+})
 
+pbjs.onEvent('bidResponse', (data) => {
+    recordEvent(EVENTS.BIDRESPONSE, {
+        time: Math.floor(Date.now() / 1000),
+        bidderCode: data.bidderCode,
+        unitCode: data.adUnitCode,
+        cpm:data.cpm
+    })
+})
+
+pbjs.onEvent('adRenderSucceeded', data => {
+    recordEvent(EVENTS.ADRENDERSUCCEEDED, {
+        time: Math.floor(Date.now() / 1000),
+        bidderCode: data.bid.bidderCode,
+        unitCode: data.bid.adUnitCode
+    })
+})
 
 
 
@@ -66,6 +63,7 @@ window.googletag = window.googletag || { cmd: [] }
 
 const googleQue = [...googletag.cmd]
 googletag.cmd.length = 0
+
 
 googletag.cmd.push(function () {
     googletag.pubads().disableInitialLoad();
