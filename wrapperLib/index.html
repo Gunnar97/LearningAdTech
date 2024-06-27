@@ -3,6 +3,8 @@
 <head>
   <script defer src="//cdn.jsdelivr.net/npm/prebid.js@latest/dist/not-for-prod/prebid.js"></script>
   <script defer src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script type="module" src="/main.js"></script>
   <title>Ad</title>
 </head>
@@ -31,6 +33,12 @@
   })
 </script>
 <h2>Manual Prebid.js Example</h2>
+
+<button id="reportButton">Report</button>
+<div id="reportData"></div>
+<button id="graphButton">Graph</button>
+<canvas id="eventChart" width="400" height="200"></canvas>
+
 
 <h5>Div-1</h5>
 <div id="div-1">

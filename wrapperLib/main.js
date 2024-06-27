@@ -1,4 +1,6 @@
 import { initQueue } from '/src/queueInit.js'
+import '/src/showReport/showReport.js'
+import '/src/showReport/showReportGraph.js'
 import 'virtual:plugins';
 import {EVENTS , CONFIG} from "/src/constant.js";
 import {renderWinningBids} from "/src/renderWinningBids.js";
@@ -13,17 +15,49 @@ function getScriptPerformanceEntry(scriptName) {
 
 const wrapperPerformance = getScriptPerformanceEntry('main.js');
 recordEvent(EVENTS.INIT, {
-    time: Date.now(),
+    time:  Math.floor(Date.now() / 1000),
     timeSincePageLoad: Math.round(performance.now()),
     timeToLoad: Math.round(wrapperPerformance.duration),
 })
 
 recordEvent(EVENTS.ERROR, {
-    time: Date.now(),
+    time:  Math.floor(Date.now() / 1000),
     timeSincePageLoad: Math.round(performance.now()),
     timeToLoad: Math.round(wrapperPerformance.duration),
     message: 'Error loading wrapper',
 })
+
+    pbjs.onEvent('bidRequested', (data) => {
+        data.bids.forEach(bid => {
+            recordEvent(2, {
+                time: Math.floor(Date.now() / 1000),
+                bidderCode: bid.bidderCode.toString(),
+                unitCode: bid.adUnitCode.toString(),
+                cpm: bid.cpm,
+
+            })
+        })
+
+    })
+
+    pbjs.onEvent('bidResponse', (data) => {
+        recordEvent(3, {
+            time: Math.floor(Date.now() / 1000),
+            bidderCode: data.bidderCode.toString(),
+            unitCode: data.adUnitCode.toString(),
+            cpm: data.cpm,
+        })
+    })
+
+    pbjs.onEvent('adRenderSucceeded', data => {
+        recordEvent(4, {
+            time: Math.floor(Date.now() / 1000),
+            bidderCode: data.bidderCode.toString(),
+            unitCode: data.adUnitCode.toString(),
+            cpm: data.cpm,
+        })
+    })
+
 
 
 

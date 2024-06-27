@@ -1,22 +1,64 @@
-import { debounce } from "./debounce.js";
+ import { debounce } from "./debounce.js";
 
-const ANAL_URL = 'http://a.com:8080/analytics'
+const ANAL_URL = 'http://localhost:8080/analytics'
+ const ANAL_EVENTS_URL = 'http://localhost:8080/analytics_event'
 
 const eventsCache = [];
 
 function sendEvents() {
-    // network issues
-    // events stream not stopping stopping debounce  - maxTime
-    // page close - beforeunload + sendBeacon
+
     fetch(ANAL_URL, {
-        body: JSON.stringify(eventsCache),
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventsCache.filter((item) => item.eventType === "0" || item.eventType === "1")),
     })
+        .then(response => {
+            if (response.status === 200) {
+                console.log('Data sent successfully');
+            } else {
+                console.log('Failed to send data');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    console.log(eventsCache.filter((item) => item.eventType === 0 || item.eventType === 1))
 }
 
-window.addEventListener('beforeunload', sendEvents)
-export const sendEventDebounced = debounce(sendEvents, 1000)
+ function sendAnalyticsEvents() {
+
+     fetch(ANAL_EVENTS_URL, {
+         method: 'POST',
+         headers: {
+             'Content-Type': 'application/json',
+         },
+         body: JSON.stringify( eventsCache.filter((item) => item.eventType === "3" || item.eventType === "4" || item.eventType === "5")),
+     })
+         .then(response => {
+             if (response.status === 200) {
+                 console.log('Data sent successfully');
+             } else {
+                 console.log('Failed to send data');
+             }
+         })
+         .catch(error => {
+             console.error('Error:', error);
+         });
+     console.log( eventsCache.filter((item) => item.eventType === 3 || item.eventType === 4 || item.eventType === 5))
+ }
+
+
+ const postDataAnalytics = () => {
+     sendEvents();
+     sendAnalyticsEvents();
+ }
+
+
+
+window.addEventListener('beforeunload', postDataAnalytics)
+export const sendEventDebounced = debounce(postDataAnalytics, 1000)
 
 
 export function recordEvent(eventType, eventData = {}) {
